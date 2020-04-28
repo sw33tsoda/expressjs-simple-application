@@ -1,0 +1,17 @@
+<div class="jumbotron send-form">
+    <h1>Add message</h1>
+    <p>Say something...</p>
+    <form method="POST" action="/users/form/post">
+        <label for="nickname">Nickname</label>
+        <input type="text" name="nickname" class="form-control" placeholder="Insert your nickname">
+        <br>
+        <label for="description">Description</label>
+        <input type="text" name="description" class="form-control" placeholder="What do you want to say?">
+        <br>
+        <input type="submit" class="btn btn-danger">
+    </form>
+</div>
+
+<% if (typeof errors !== 'undefined') errors.forEach(error => {%>
+<p class="errors"><%= error %></p>
+<% }); %>
