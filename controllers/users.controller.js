@@ -10,19 +10,28 @@ function saveDatabase() {
 }
 
 module.exports.index = (req,res) => {
-    res.cookie('something','haha');
+    var itemsPerPage = 5;
+    var pages = Math.ceil(database.length / itemsPerPage);
+    var result = database;
+    if (typeof req.query.page !== 'undefined') {
+        var begin = (req.query.page - 1) * itemsPerPage;
+        var end = (req.query.page - 1) * itemsPerPage + itemsPerPage;
+        result = result.slice(begin,end);
+    }
+
     res.render('index.ejs', {
         title: 'BlahStation',
         page: 'list',
-        data: database,
+        data: result,
+        pages: pages,
     });
 }
 
 module.exports.create = (req,res) => {
-    console.log(req.cookies);
     res.render('index.ejs',{
         title : 'Add message',
         page : 'form',
+        csrfToken : req.csrfToken(),
     });
 }
 
@@ -31,9 +40,10 @@ module.exports.store = (req,res) => {
         id : uniquid(),
         nickname : req.body.nickname,
         description : req.body.description,
+        image : req.file.filename,
     });
     saveDatabase();
-    res.redirect('/users');
+    res.redirect('/users?page=1');
 }
 
 module.exports.edit = (req,res) => {
@@ -61,5 +71,5 @@ module.exports.destroy = (req,res) => {
         return user.id !== req.params.id;
     });
     saveDatabase();
-    res.redirect('/users');
+    res.redirect('/users?page=1');
 }

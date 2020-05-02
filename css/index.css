@@ -14,3 +14,11 @@ td,th {
 .errors {
     color: red;
 }
+
+.pagination {
+    justify-content: center;
+}
+
+.pagination > a {
+    margin:5px;
+}
